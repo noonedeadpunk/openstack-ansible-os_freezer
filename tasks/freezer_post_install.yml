@@ -31,8 +31,9 @@
     - src: "scheduler.conf.j2"
       dest: "/etc/freezer/scheduler.conf"
       config_overrides: "{{ freezer_scheduler_conf_overrides }}"
-      config_type: "yaml"
+      config_type: "ini"
       condition: "{{ (freezer_services['freezer-scheduler']['group'] in group_names and inventory_hostname in groups[freezer_services['freezer-scheduler']['group']]) | bool }}"
+  when: item.condition | default(true)
   notify:
     - Restart freezer services
     - Restart uwsgi services
