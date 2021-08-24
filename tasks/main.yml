@@ -107,37 +107,6 @@
     - freezer-config
     - systemd-service
 
-- import_tasks: service_setup.yml
-  vars:
-    _service_adminuri_insecure: "{{ keystone_service_adminuri_insecure }}"
-    _service_in_ldap: "{{ freezer_service_in_ldap }}"
-    _service_setup_host: "{{ freezer_service_setup_host }}"
-    _service_setup_host_python_interpreter: "{{ freezer_service_setup_host_python_interpreter }}"
-    _service_project_name: "{{ freezer_service_project_name }}"
-    _service_region: "{{ freezer_service_region }}"
-    _service_users:
-      - name: "{{ freezer_service_user_name }}"
-        password: "{{ freezer_service_password }}"
-        role: "{{ freezer_role_name }}"
-    _service_catalog:
-      - name: "{{ freezer_service_name }}"
-        type: "{{ freezer_service_type }}"
-        description: "{{ freezer_service_description }}"
-    _service_endpoints:
-      - interface: "public"
-        url: "{{ freezer_service_publicurl }}"
-        service: "{{ freezer_service_name }}"
-      - interface: "internal"
-        url: "{{ freezer_service_internalurl }}"
-        service: "{{ freezer_service_name }}"
-      - interface: "admin"
-        url: "{{ freezer_service_adminurl }}"
-        service: "{{ freezer_service_name }}"
-  when:
-    - "_freezer_api_is_first_play_host"
-  tags:
-    - freezer-config
-
 - name: Import uwsgi role
   import_role:
     name: uwsgi
