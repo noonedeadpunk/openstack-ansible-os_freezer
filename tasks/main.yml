@@ -54,12 +54,10 @@
     _service_setup_host_python_interpreter: "{{ freezer_service_setup_host_python_interpreter }}"
     _service_project_name: "{{ freezer_service_project_name }}"
     _service_region: "{{ freezer_service_region }}"
-    _project_domain: "{{ freezer_service_project_domain_name }}"
     _service_users:
       - name: "{{ freezer_service_user_name }}"
         password: "{{ freezer_service_password }}"
         role: "{{ freezer_role_name }}"
-        domain: "{{ freezer_service_user_domain_name }}"
       - role: "project_mod"
       - role: "project_admin"
     _service_catalog:
