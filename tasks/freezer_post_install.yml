@@ -25,12 +25,12 @@
   with_items:
     - src: "freezer-api.conf.j2"
       dest: "/etc/freezer/freezer-api.conf"
-      config_overrides: "{{ freezer_freezer_conf_overrides }}"
+      config_overrides: "{{ freezer_api_conf_overrides }}"
       config_type: "ini"
       condition: "{{ (freezer_services['freezer-api']['group'] in group_names and inventory_hostname in groups[freezer_services['freezer-api']['group']]) | bool }}"
     - src: "scheduler.conf.j2"
       dest: "/etc/freezer/scheduler.conf"
-      config_overrides: "{{ freezer_freezer_conf_overrides }}"
+      config_overrides: "{{ freezer_scheduler_conf_overrides }}"
       config_type: "yaml"
       condition: "{{ (freezer_services['freezer-scheduler']['group'] in group_names and inventory_hostname in groups[freezer_services['freezer-scheduler']['group']]) | bool }}"
   notify:

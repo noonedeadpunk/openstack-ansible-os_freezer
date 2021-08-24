@@ -19,8 +19,10 @@ freezer_pip_packages: |-
   {% set packages = [] %}
   {% if freezer_services['freezer-api']['group'] in group_names and inventory_hostname in groups[freezer_services['freezer-api']['group']] %}
   {% set packages = freezer_api_pip_packages %}
+  {% endif %}
   {% if freezer_services['freezer-scheduler']['group'] in group_names and inventory_hostname in groups[freezer_services['freezer-scheduler']['group']] %}
   {% set packages = freezer_scheduler_pip_packages %}
+  {% endif %}
   {{ packages }}
 
 filtered_freezer_services: |-
