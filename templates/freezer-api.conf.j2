@@ -16,8 +16,8 @@ connection = mysql+pymysql://{{ freezer_galera_user }}:{{ freezer_galera_passwor
 
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
-project_domain_id = {{ freezer_service_project_domain_id }}
-user_domain_id = {{ freezer_service_user_domain_id }}
+project_domain_name = {{ freezer_service_project_domain_name }}
+user_domain_name = {{ freezer_service_user_domain_name }}
 project_name = {{ freezer_service_project_name }}
 username = {{ freezer_service_user_name }}
 password = {{ freezer_service_password }}
