@@ -45,7 +45,10 @@ freezer_venv_python_executable: "{{ openstack_venv_python_executable | default('
 freezer_api_pip_packages:
   - freezer-api
   - cryptography
+  - PyMySQL
+  - python-memcached
   - systemd-python
+  - sqlalchemy
 
 freezer_scheduler_pip_packages:
   - freezer
