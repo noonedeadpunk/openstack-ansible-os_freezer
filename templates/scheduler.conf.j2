@@ -1,0 +1,20 @@
+[DEFAULT]
+
+debug = {{ debug }}
+use_journal = True
+use_stderr = False
+
+client_id = {{ ansible_facts['nodename'] }}
+jobs_dir = /etc/freezer/scheduler/conf.d
+enable_v1_api = {{ freezer_enable_v1_api }}
+
+
+insecure = false
+
+# Allow Freezer Scheduler to deny jobs that execute commands for security
+# reasons (boolean value)
+#disable_exec = false
+
+# Number of jobs that can be executed at the same time (integer value)
+#concurrent_jobs = 1
+
