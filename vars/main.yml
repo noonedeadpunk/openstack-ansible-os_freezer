@@ -58,9 +58,3 @@ uwsgi_freezer_services: |-
   {%   endif %}
   {% endfor %}
   {{ services }}
-
-freezer_core_files:
-  - tmp_f: "/tmp/freezer-paste.ini"
-    target_f: "/etc/freezer/freezer-paste.ini"
-    config_overrides: "{{ freezer_paste_ini_overrides }}"
-    config_type: "ini"

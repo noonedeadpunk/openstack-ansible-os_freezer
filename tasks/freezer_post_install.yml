@@ -28,6 +28,11 @@
       config_overrides: "{{ freezer_api_conf_overrides }}"
       config_type: "ini"
       condition: "{{ (freezer_services['freezer-api']['group'] in group_names and inventory_hostname in groups[freezer_services['freezer-api']['group']]) | bool }}"
+    - src: "freezer-paste.ini.j2"
+      dest: "/etc/freezer/freezer-paste.ini"
+      config_overrides: "{{ freezer_paste_ini_overrides }}"
+      config_type: "ini"
+      condition: "{{ (freezer_services['freezer-api']['group'] in group_names and inventory_hostname in groups[freezer_services['freezer-api']['group']]) | bool }}"
     - src: "scheduler.conf.j2"
       dest: "/etc/freezer/scheduler.conf"
       config_overrides: "{{ freezer_scheduler_conf_overrides }}"
@@ -59,43 +64,3 @@
     - freezer_api_policy_overrides | length == 0
   tags:
     - freezer-policy-override
-
-# NOTE(cloudnull): This is using "cp" instead of copy with a remote_source
-#                  because we only want to copy the original files once. and we
-#                  don't want to need multiple tasks.
-- name: Preserve original configuration file(s)
-  command: "cp {{ item.target_f }} {{ item.target_f }}.original"
-  args:
-    creates: "{{ item.target_f }}.original"
-  with_items: "{{ freezer_core_files }}"
-
-- name: Fetch override files
-  fetch:
-    src: "{{ item.target_f }}"
-    dest: "{{ item.tmp_f }}"
-    flat: yes
-  changed_when: false
-  run_once: true
-  with_items: "{{ freezer_core_files }}"
-
-- name: Copy common config
-  config_template:
-    src: "{{ item.tmp_f }}"
-    dest: "{{ item.target_f }}"
-    owner: "root"
-    group: "{{ item.group | default(freezer_system_group_name) }}"
-    mode: "0640"
-    config_overrides: "{{ item.config_overrides }}"
-    config_type: "{{ item.config_type }}"
-  with_items: "{{ freezer_core_files }}"
-  notify:
-    - Restart uwsgi services
-    - Restart freezer services
-
-- name: Cleanup fetched temp files
-  file:
-    path: "{{ item.tmp_f }}"
-    state: absent
-  changed_when: false
-  delegate_to: localhost
-  with_items: "{{ freezer_core_files }}"
