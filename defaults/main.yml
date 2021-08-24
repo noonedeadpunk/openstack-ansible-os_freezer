@@ -82,9 +82,9 @@ freezer_service_proto: http
 freezer_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(freezer_service_proto) }}"
 freezer_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(freezer_service_proto) }}"
 freezer_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(freezer_service_proto) }}"
-freezer_service_publicuri: "{{ freezer_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ freezer_service_port }}"
-freezer_service_adminuri: "{{ freezer_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ freezer_service_port }}"
-freezer_service_internaluri: "{{ freezer_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ freezer_service_port }}"
+freezer_service_publicuri: "{{ freezer_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ freezer_api_service_port }}"
+freezer_service_adminuri: "{{ freezer_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ freezer_api_service_port }}"
+freezer_service_internaluri: "{{ freezer_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ freezer_api_service_port }}"
 freezer_service_endpoint_type: internal
 
 # uWSGI settings
