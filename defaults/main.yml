@@ -43,7 +43,10 @@ freezer_venv_python_executable: "{{ openstack_venv_python_executable | default('
 freezer_api_pip_packages:
   - "git+{{ freezer_api_git_repo }}@{{ freezer_api_git_install_branch }}#egg=freezer-api"
   - cryptography
+  - PyMySQL
+  - python-memcached
   - systemd-python
+  - sqlalchemy
 
 freezer_scheduler_pip_packages:
   - "git+{{ freezer_scheduler_git_repo }}@{{ freezer_scheduler_git_install_branch }}#egg=freezer"
