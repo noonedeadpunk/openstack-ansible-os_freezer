@@ -52,7 +52,6 @@ freezer_scheduler_pip_packages:
   - cryptography
   - systemd-python
 
-freezer_user_domain_name: Default
 freezer_keystone_auth_plugin: password
 
 # DB settings
@@ -73,6 +72,8 @@ freezer_service_region: "{{ service_region | default('RegionOne') }}"
 freezer_service_name: freezer
 freezer_service_type: backup
 freezer_service_description: "Freezer Backup Service"
+freezer_service_user_domain_name: Default
+freezer_service_project_domain_name: Default
 freezer_api_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
 freezer_api_service_port: 9090
 freezer_service_project_name: service
