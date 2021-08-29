@@ -32,7 +32,7 @@ freezer_bin: "/openstack/venvs/freezer-{{ freezer_venv_tag }}/bin"
 
 freezer_api_git_repo: https://opendev.org/openstack/freezer-api
 freezer_api_git_install_branch: master
-freezer_scheduler_git_repo: https://opendev.org/openstack/freezer-api
+freezer_scheduler_git_repo: https://opendev.org/openstack/freezer
 freezer_scheduler_git_install_branch: master
 freezer_upper_constraints_url: "{{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}"
 freezer_git_constraints:
