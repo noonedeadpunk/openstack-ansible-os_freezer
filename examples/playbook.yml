@@ -1,0 +1,53 @@
+- name: Gather freezer facts
+  hosts: freezer_all
+  gather_facts: "{{ osa_gather_facts | default(True) }}"
+  tags:
+    - always
+
+- name: Install freezer services
+  hosts: freezer_all
+  gather_facts: false
+  serial: "{{ freezer_api_serial | default(['1','100%']) }}"
+  user: root
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  vars_files:
+    - "defaults/repo_packages/openstack_services.yml"
+    - "defaults/{{ install_method | default('source') }}_install.yml"
+  tags:
+    - freezer
+  pre_tasks:
+#    - name: Gather additional facts
+#      include_tasks: "common-tasks/gather-hardware-facts.yml"
+#      tags:
+#        - always
+
+    # In order to ensure that any container, software or
+    # config file changes which causes a container/service
+    # restart do not cause an unexpected outage, we drain
+    # the load balancer back end for this container.
+    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
+      vars:
+        haproxy_backend: freezer_api-back
+        haproxy_state: disabled
+      when:
+        - "'freezer_api' in group_names"
+        - "groups['freezer_api'] | length > 1"
+
+    - include_tasks: common-tasks/unbound-clients.yml
+      when:
+        - hostvars['localhost']['resolvconf_enabled'] | default(False) | bool
+
+  roles:
+   - role: "os_freezer"
+
+  post_tasks:
+    # Now that container changes are done, we can set
+    # the load balancer back end for this container
+    # to available again.
+    - include_tasks: common-tasks/haproxy-endpoint-manage.yml
+      vars:
+        haproxy_backend: freezer_api-back
+        haproxy_state: enabled
+      when:
+        - "'freezer_api' in group_names"
+        - "groups['freezer_api'] | length > 1"
