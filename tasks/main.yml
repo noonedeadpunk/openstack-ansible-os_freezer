@@ -14,19 +14,27 @@
 # limitations under the License.
 
 - name: Gather variables for each operating system
-  include_vars: "{{ item }}"
-  with_first_found:
-    - "{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_version'] | lower }}.yml"
-    - "{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_major_version'] | lower }}.yml"
-    - "{{ ansible_facts['os_family'] | lower }}-{{ ansible_facts['distribution_major_version'] | lower }}.yml"
-    - "{{ ansible_facts['distribution'] | lower }}.yml"
-    - "{{ ansible_facts['os_family'] | lower }}-{{ ansible_facts['distribution_version'].split('.')[0] }}.yml"
-    - "{{ ansible_facts['os_family'] | lower }}.yml"
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_version'] | lower }}.yml"
+        - "{{ ansible_facts['distribution'] | lower }}-{{ ansible_facts['distribution_major_version'] | lower }}.yml"
+        - "{{ ansible_facts['os_family'] | lower }}-{{ ansible_facts['distribution_major_version'] | lower }}.yml"
+        - "{{ ansible_facts['distribution'] | lower }}.yml"
+        - "{{ ansible_facts['os_family'] | lower }}.yml"
+      paths:
+        - "{{ role_path }}/vars"
   tags:
     - always
 
-- import_tasks: db_setup.yml
-  when: _freezer_api_is_first_play_host
+- name: Including osa.db_setup role
+  include_role:
+    name: openstack.osa.db_setup
+    apply:
+      tags:
+        - common-db
+        - freezer-config
   vars:
     _oslodb_setup_host: "{{ freezer_galera_setup_host }}"
     _oslodb_ansible_python_interpreter: "{{ freezer_galera_setup_python_interpreter }}"
@@ -41,24 +49,34 @@
     - common-db
     - freezer-config
 
-- import_tasks: freezer_pre_install.yml
+- name: Importing freezer_pre_install tasks
+  import_tasks: freezer_pre_install.yml
   tags:
     - freezer-install
 
-- import_tasks: freezer_install.yml
+- name: Importing freezer_install tasks
+  import_tasks: freezer_install.yml
   tags:
     - freezer-install
 
-- import_tasks: freezer_post_install.yml
+- name: Importing freezer_post_install tasks
+  import_tasks: freezer_post_install.yml
   tags:
     - freezer-config
 
-- import_tasks: freezer_db_sync.yml
+- name: Importing freezer_db_sync tasks
+  import_tasks: freezer_db_sync.yml
   when: _freezer_api_is_first_play_host
   tags:
     - freezer-config
 
-- import_tasks: service_setup.yml
+- name: Including osa.service_setup role
+  include_role:
+    name: openstack.osa.service_setup
+    apply:
+      tags:
+        - common-service
+        - freezer-config
   vars:
     _service_adminuri_insecure: "{{ keystone_service_adminuri_insecure }}"
     _service_in_ldap: "{{ freezer_service_in_ldap }}"

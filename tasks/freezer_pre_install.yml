@@ -39,4 +39,3 @@
   with_items:
     - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
     - { path: "/etc/freezer" }
-    - { path: "/var/log/freezer" }
