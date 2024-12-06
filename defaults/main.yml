@@ -93,7 +93,7 @@ freezer_service_endpoint_type: internal
 # uWSGI settings
 freezer_wsgi_threads: 1
 freezer_wsgi_processes_max: 16
-freezer_wsgi_processes: "{{ [[(ansible_processor_vcpus//ansible_processor_threads_per_core)|default(1), 1] | max * 2, freezer_wsgi_processes_max] | min }}"
+freezer_wsgi_processes: "{{ [[(ansible_facts['processor_vcpus']//ansible_facts['processor_threads_per_core'])|default(1), 1] | max * 2, freezer_wsgi_processes_max] | min }}"
 freezer_use_uwsgi: True
 
 # Enable V1 API
