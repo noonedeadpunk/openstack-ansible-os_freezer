@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Drop freezer Config(s)
-  config_template:
+  openstack.config_template.config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ freezer_system_user_name }}"
@@ -44,7 +44,7 @@
     - Restart uwsgi services
 
 - name: Implement policy.yaml if there are overrides configured
-  config_template:
+  openstack.config_template.config_template:
     content: "{{ freezer_api_policy_overrides }}"
     dest: "/etc/freezer/policy.yaml"
     owner: "root"
