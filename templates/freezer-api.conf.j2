@@ -12,7 +12,7 @@ bind_port = {{ freezer_api_service_port }}
 enable_v1_api = {{ freezer_enable_v1_api }}
 
 [database]
-connection = mysql+pymysql://{{ freezer_galera_user }}:{{ freezer_galera_password }}@{{ freezer_galera_address }}/{{ freezer_galera_database }}?charset=utf8{% if freezer_galera_use_ssl | bool %}&ssl_ca={{ freezer_galera_ssl_ca_cert }}{% endif %}
+connection = mysql+pymysql://{{ freezer_galera_user }}:{{ freezer_galera_password }}@{{ freezer_galera_address }}/{{ freezer_galera_database }}?charset=utf8{% if freezer_galera_use_ssl | bool %}&ssl_verify_cert=true{% if freezer_galera_ssl_ca_cert | length > 0 %}&ssl_ca={{ freezer_galera_ssl_ca_cert }}{% endif %}{% endif +%}
 
 [keystone_authtoken]
 insecure = {{ keystone_service_internaluri_insecure | bool }}
