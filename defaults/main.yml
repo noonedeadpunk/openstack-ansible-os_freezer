@@ -70,7 +70,7 @@ freezer_memcached_servers: "{{ memcached_servers }}"
 ## Service Type and Data
 freezer_role_name: admin
 freezer_service_region: "{{ service_region | default('RegionOne') }}"
-freezer_service_name: freezer-api
+freezer_service_name: freezer
 freezer_service_type: backup
 freezer_service_description: "Freezer Backup Service"
 freezer_service_user_domain_name: Default
